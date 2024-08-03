@@ -1,3 +1,23 @@
+### GETTING STARTED
+
+To get started with the Bookshop-Management-System project, follow these steps:
+
+  1 Clone the Repository:
+
+  Clone this repository to your local machine using the following command:
+
+    https://github.com/David-Hunt327/Diabetes-Management-Chatbot.git
+
+  2 Navigate to the Project Directory:
+
+  Change your current directory to the project directory:
+
+    cd Diabetes-Management-Chatbot
+
+
+
+or Download manually
+
 ### SETUP
 - Unzip the file and extract to a desired location.
 - Open the file in vs code and head to the terminal.
@@ -16,4 +36,4 @@
 
 
 ### FUNCTIONALITIES
-- Chatbot (Already Trained), PLEASE REFRAIN FROM EDITING IT.
+- Chatbot.
