@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diabetes Management Chatbot</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <a href="/">
+          <img src="../assets/bot.webp" alt="Diabetes Assistance Chatbot">
+        </a>
+      </div>
+      <div class="left">
+        <ul>
+          <li><a href="/" class="active">Home</a></li>
+          <li><a href="./routes/HowItWorks.html">How It Works</a></li>
+          <li><a href="./routes/AboutUs.html">About Us</a></li>
+        </ul>
+      </div>
+
+      <!-- <div class="right">
+        <ul>
+          <li><a href="#">Login</a></li> |
+          <li><a href="#">Register</a></li>
+        </ul>
+      </div> -->
+    </nav>
+  </header>
+
+  <main>
+    <section class="content">
+      <div class="image-container">
+        <img src="./assets/image.png" >
+      </div>
+      <div class="text-container">
+        <h1>DIABETES ASSISTANCE CHATBOT</h1>
+        <p>Not sure if you are diabetic and you don't feel like going to the hospital for check up, Don't worry we got you covered with our assistive diabetic chat bot</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating Chat Icon -->
+  <div id="chatIcon" class="chat-icon" onclick="toggleChat()">
+    <img src="./assets/chat-icon.png" alt="Chat Icon">
+  </div>
+
+  <div id="chatBox" class="chat-container" style="display: none;">
+    <div class="heading">
+      <h2>Diabetes Assistive Chatbot</h2>
+      <button onclick="toggleChat()">X</button>
+    </div>
+    <div id="chatlogs" class="chatlogs">
+      <!-- Chat messages will be appended here -->
+    </div>
+
+    <div id="suggestions" class="suggestions">
+      <!-- Suggestive buttons will be appended here -->
+    </div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Ask the chatbot..." autocomplete="off">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatlogs = document.getElementById('chatlogs');
+    const userInput = document.getElementById('userInput');
+    const suggestionsContainer = document.getElementById('suggestions');
+  
+    function appendMessage(sender, message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', sender.toLowerCase());
+      messageDiv.innerHTML = `<span>${message}</span>`;
+      chatlogs.appendChild(messageDiv);
+      chatlogs.scrollTop = chatlogs.scrollHeight;
+    }
+  
+    function generateSuggestions(suggestions) {
+      suggestionsContainer.innerHTML = '';
+      suggestions.forEach(suggestion => {
+        const button = document.createElement('button');
+        button.classList.add('suggestion-button');
+        button.textContent = suggestion;
+        button.onclick = () => {
+          userInput.value = suggestion;
+          sendMessage();
+        };
+        suggestionsContainer.appendChild(button);
+      });
+    }
+  
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (message === '') return;
+      appendMessage('You', message);
+      userInput.value = '';
+  
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+  
+        const data = await response.json();
+        appendMessage('Bot', data.reply);
+  
+        generateSuggestions(data.suggestions || []);
+      } catch (error) {
+        console.error('Error:', error);
+        appendMessage('Bot', 'Sorry, there was an error processing your request.');
+      }
+    }
+  
+    function toggleChat() {
+      const chatBox = document.getElementById('chatBox');
+      chatBox.style.display = chatBox.style.display === 'none' ? 'flex' : 'none';
+    }
+  </script>
+  
+</body>
+</html>
