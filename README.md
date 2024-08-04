@@ -1,6 +1,6 @@
 ### GETTING STARTED
 
-To get started with the Bookshop-Management-System project, follow these steps:
+To get started with the Diabetes Chatbot project, follow these steps:
 
   1 Clone the Repository:
 
